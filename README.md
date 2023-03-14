@@ -20,6 +20,6 @@ To get started with the example, you will need to have Make and GCC installed. F
  - The top left column and row is (0, 0).
  - Does not actually output anything to the screen yet.
 
- `void  graphics_push(struct  GraphicsHandles  handles);` - Takes initialized struct `handles`. Returns nothing. Flushes the pixel (colored blocks) buffer to `stdout` (file descriptor 1). This will actually print the added pixels.
+ `void  graphics_push(struct  GraphicsHandles  handles);` - Takes initialized struct `handles`. Returns nothing. Flushes the pixel buffer to the standard output (file descriptor 1). This will actually print the added pixels.
  
 `void  graphics_free(struct GraphicsHandles handles)` - Takes initialized struct `handles`. Returns nothing. Frees allocated memory. Should be called when done using graphics.
