@@ -24,6 +24,9 @@ struct GraphicsHandles graphics_init() {
 
     graphics_reset_pixel_buffer(handles);
 
+    // Hide the cursor.
+    write(1, "\033[?25l", strlen("\033[?25l"));
+
     system("clear");
 
     return handles;
