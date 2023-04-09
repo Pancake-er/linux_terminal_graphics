@@ -8,6 +8,7 @@ struct GraphicsHandles {
     size_t window_width;
     size_t window_height;
     size_t pixel_size;
+    size_t clear_char_size;
     size_t pixel_buffer_size;
     char *pixel_buffer;
 };
