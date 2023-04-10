@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mem_util.h"
-#include "colors.h"
 #include "graphics.h"
 
 struct GraphicsHandles graphics_init() {
@@ -14,8 +13,8 @@ struct GraphicsHandles graphics_init() {
     handles.window_width = window_info.ws_col;
     handles.window_height = window_info.ws_row;
 
-    /* Pixel size does not include '\0'. All the color escape codes are the 
-    same length, so I just use black here. */
+    /* Pixel size does not include '\0'. All the color escape codes and block 
+    characters are the same length, so I just use black and █ here. */
     handles.pixel_size = strlen(BLK) + strlen("█");
     handles.clear_char_size = strlen("\33[0;0H");
     // No '\0' because write() is used instead of printf().
@@ -47,10 +46,20 @@ void graphics_reset_pixel_buffer(struct GraphicsHandles handles) {
     }
 }
 void graphics_add_pixel(struct GraphicsHandles handles, int x, int y, 
-    char *color) {
+    char *color, char *block) {
 
-    memcpy(handles.pixel_buffer + (x + y * handles.window_width) 
-        * handles.pixel_size, color, strlen(BLK));
+    size_t position = x + y * handles.window_width;
+    if (position < handles.window_width * handles.window_height) {
+        memcpy(handles.pixel_buffer + position * handles.pixel_size, 
+            color, strlen(BLK));
+        memcpy(handles.pixel_buffer + position * handles.pixel_size 
+            + strlen(BLK), block, strlen(FULL_BLOCK));
+    }
+    else {
+        fprintf(stderr, "\e[0;30mError: pixel position out of bounds\n");
+        fflush(stderr);
+        exit(EXIT_FAILURE);
+    }
 }
 void graphics_push(struct GraphicsHandles handles) {
     write(1, handles.pixel_buffer, handles.pixel_buffer_size);

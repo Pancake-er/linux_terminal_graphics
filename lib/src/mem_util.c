@@ -7,8 +7,9 @@ void *malloc_or_die(size_t size)
 
     if(alloc_mem == NULL)
     {
-        perror("Failed to allocate memory");
         free(alloc_mem);
+        fprintf(stderr, "\e[0;30mFailed to allocate memory\n");
+        fflush(stderr);
         exit(EXIT_FAILURE);
     }
     return alloc_mem;
